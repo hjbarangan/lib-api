@@ -1,3 +1,4 @@
+```
 
 store procedures - did not trigger a condition where if the ISBN exists it will raise an error
 
@@ -11,6 +12,9 @@ edit user - "invalid input syntax for type integer: \"cc\""
 
 delete user - "cannot delete"
 
+```
+
+```
 [/] GET	/books	Fetch all books 
 [/] POST	/books	Add book
 [] PUT	/books/id	Edit book
@@ -29,12 +33,15 @@ delete user - "cannot delete"
 [] DELETE	/publishers/id	Delete publisher
 		
 		
-[] GET	/borrow-records	Fetch all the borrowed books
-[] POST	/borrow-records	Add requests
-[] PUT	/borrow-records/id	Edit borrow requests
-[] DELETE		
+[/] GET	/borrow	Fetch all the borrowed books
+[/] GET	/borrow/unreturned	Fetch all the unreturned borrowed books
+[] POST	/borrow	Add requests
+[] PUT	/borrow/id	Edit borrow requests
+
 		
 [/] GET	/users	Fetch all users
 [/] POST	/users	Add user
 [] PUT	/users/id	Edit user
 [] DELETE	/users/id	Delete user
+
+```
