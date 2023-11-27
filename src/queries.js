@@ -32,20 +32,10 @@ const createBook = async (book) => {
       author,
       category_id,
       pages,
-      status,
     } = book;
     const result = await pool.query(
-      "CALL add_book($1, $2, $3, $4, $5, $6, $7, $8)",
-      [
-        isbn,
-        publication_year,
-        publisher_id,
-        title,
-        author,
-        category_id,
-        pages,
-        status,
-      ]
+      "CALL add_book($1, $2, $3, $4, $5, $6, $7)",
+      [isbn, publication_year, publisher_id, title, author, category_id, pages]
     );
     return result.rows[0];
   } catch (error) {
@@ -64,11 +54,11 @@ const updateBook = async (bookId, book) => {
       author,
       category_id,
       pages,
-      status,
     } = book;
     const result = await pool.query(
-      "CALL update_book($1, $2, $3, $4, $5, $6, $7, $8, $9)",
+      "CALL update_book($1, $2, $3, $4, $5, $6, $7, $8)",
       [
+        bookId,
         isbn,
         publication_year,
         publisher_id,
@@ -76,8 +66,6 @@ const updateBook = async (bookId, book) => {
         author,
         category_id,
         pages,
-        status,
-        bookId,
       ]
     );
     return result.rows[0];
@@ -176,8 +164,8 @@ const updateCategory = async (categoryId, category) => {
   try {
     const { category_name } = category;
     const result = await pool.query("CALL update_category($1, $2)", [
-      category_name,
       categoryId,
+      category_name,
     ]);
     return result.rows[0];
   } catch (error) {
@@ -190,9 +178,9 @@ const updatePublisher = async (publisherId, publisher) => {
   try {
     const { publisher_name, publication_location } = publisher;
     const result = await pool.query("CALL update_publisher($1, $2, $3)", [
+      publisherId,
       publisher_name,
       publication_location,
-      publisherId,
     ]);
     return result.rows[0];
   } catch (error) {
@@ -344,6 +332,48 @@ const updateBorrowedBook = async (borrowedBookId, borrowedBook) => {
   }
 };
 
+const addCopy = async (book) => {
+  try {
+    const { book_id, status } = book;
+    const result = await pool.query("CALL add_copy($1, $2)", [book_id, status]);
+    return result.rows[0];
+  } catch (error) {
+    console.error("Error in addCopy:", error);
+    throw error;
+  }
+};
+
+const updateCopy = async (book) => {
+  try {
+    const { copy_id, book_id, status } = book;
+    const result = await pool.query("CALL update_copy($1, $2, $3)", [copy_id, book_id, status]);
+    return result.rows[0];
+  } catch (error) {
+    console.error("Error in updateCopy:", error);
+    throw error;
+  }
+};
+
+const deleteCopy = async (copyId) => {
+  try {
+    const result = await pool.query("CALL delete_copy($1)", [copyId]);
+    return result.rows;
+  } catch (error) {
+    console.error("Error in deleteCopy:", error);
+    throw error;
+  }
+};
+
+const getAllBookCopies = async () => {
+  try {
+    const result = await pool.query("SELECT * FROM v_copies");
+    return result.rows;
+  } catch (error) {
+    console.error("Error in getBookCopies:", error);
+    throw error;
+  }
+};
+
 module.exports = {
   getAllBooks,
   getBookById,
@@ -370,4 +400,8 @@ module.exports = {
   getBorrowedBookById,
   createBorrowedBook,
   updateBorrowedBook,
+  addCopy,
+  updateCopy,
+  deleteCopy,
+  getAllBookCopies,
 };
