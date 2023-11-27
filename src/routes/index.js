@@ -12,7 +12,7 @@ router.use("/books", booksRoutes);
 router.use("/categories", categoriesRoutes);
 router.use("/publishers", publishersRoutes);
 router.use("/users", usersRoutes);
-router.use("/borrow", borrowRoutes);
-router.use("/copy", copyRoutes);
+router.use("/borrow-records", borrowRoutes);
+router.use("/copies", copyRoutes);
 
 module.exports = router;
