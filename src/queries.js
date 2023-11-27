@@ -239,29 +239,29 @@ const createUser = async (user) => {
       "CALL add_useraccount($1, $2, $3, $4, $5)",
       [first_name, last_name, username, password, role]
     );
-    return result.rows[0];
+    return result;
   } catch (error) {
     console.error("Error in createUser:", error);
     throw error;
   }
 };
 
-const updateUser = async (userId, user) => {
+const updateUser = async (user_id, user) => {
   try {
     const { first_name, last_name, username, password, role } = user;
     const result = await pool.query(
       "CALL update_useraccount($1, $2, $3, $4, $5, $6)",
-      [first_name, last_name, username, password, role, userId]
+      [user_id, first_name, last_name, username, password, role]
     );
-    return result.rows[0];
+    return result;
   } catch (error) {
     console.error("Error in updating the user:", error);
     throw error;
   }
 };
-const deleteUser = async (userId) => {
+const deleteUser = async (user_id) => {
   try {
-    const result = await pool.query("CALL delete_useraccount($1)", [userId]);
+    const result = await pool.query("CALL delete_useraccount($1)", [user_id]);
     return result.rows[0];
   } catch (error) {
     console.error("Error in deleteUser:", error);
@@ -304,26 +304,28 @@ const getBorrowedBookById = async (borrowedBookId) => {
 
 const createBorrowedBook = async (borrowedBook) => {
   try {
-    const { book_id, user_id, borrowed_date, due_date } = borrowedBook;
-    const result = await pool.query("CALL add_borrowrecord($1, $2, $3, $4)", [
-      book_id,
+    const { copy_id, user_id, borrow_date, returned_date, status } =
+      borrowedBook;
+    const result = await pool.query("CALL add_borrowrecord($1, $2, $3, $4, $5)", [
+      copy_id,
       user_id,
-      borrowed_date,
-      due_date,
+      borrow_date,
+      returned_date,
+      status,
     ]);
-    return result.rows[0];
+    return result;
   } catch (error) {
     console.error("Error in creating the borrowed books:", error);
     throw error;
   }
 };
 
-const updateBorrowedBook = async (borrowedBookId, borrowedBook) => {
+const updateBorrowedBook = async (book_record_id, borrowedBook) => {
   try {
-    const { book_id, user_id, borrowed_date, due_date } = borrowedBook;
+    const {  copy_id, user_id, borrow_date, returned_date, status  } = borrowedBook;
     const result = await pool.query(
-      "CALL update_borrowrecord($1, $2, $3, $4, $5)",
-      [book_id, user_id, borrowed_date, due_date, borrowedBookId]
+      "CALL update_borrowrecord($1, $2, $3, $4, $5, $6)",
+      [ book_record_id, copy_id, user_id, borrow_date, returned_date, status,]
     );
     return result.rows[0];
   } catch (error) {
@@ -344,10 +346,15 @@ const addCopy = async (book) => {
 };
 
 const updateCopy = async (book) => {
+  console.log("🚀 ~ file: queries.js:349 ~ updateCopy ~ book:", book)
   try {
     const { copy_id, book_id, status } = book;
-    const result = await pool.query("CALL update_copy($1, $2, $3)", [copy_id, book_id, status]);
-    return result.rows[0];
+    const result = await pool.query("CALL update_copy($1, $2, $3)", [
+      copy_id,
+      book_id,
+      status,
+    ]);
+    return result;
   } catch (error) {
     console.error("Error in updateCopy:", error);
     throw error;
