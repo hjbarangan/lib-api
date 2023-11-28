@@ -1,4 +1,6 @@
 const pool = require("./db");
+const validateBook = require("./validations/book.validation");
+const validateUser = require("./validations/user.validation");
 
 const getAllBooks = async () => {
   try {
@@ -33,6 +35,17 @@ const createBook = async (book) => {
       category_id,
       pages,
     } = book;
+
+    const checkBook = await pool.query("SELECT * FROM books WHERE isbn = $1", [
+      isbn,
+    ]);
+
+    if (checkBook.rows.length > 0) {
+      throw new Error("Book already exists");
+    }
+
+    await validateBook(book);
+
     const result = await pool.query(
       "CALL add_book($1, $2, $3, $4, $5, $6, $7)",
       [isbn, publication_year, publisher_id, title, author, category_id, pages]
@@ -235,6 +248,18 @@ const getUserById = async (userId) => {
 const createUser = async (user) => {
   try {
     const { first_name, last_name, username, password, role } = user;
+
+    const checkUser = await pool.query(
+      "SELECT * FROM user_account WHERE username = $1",
+      [username]
+    );
+
+    if (checkUser.rows.length > 0) {
+      throw new Error("User already exists");
+    }
+
+    await validateUser(user);
+
     const result = await pool.query(
       "CALL add_useraccount($1, $2, $3, $4, $5)",
       [first_name, last_name, username, password, role]
