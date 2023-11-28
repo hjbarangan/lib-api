@@ -144,14 +144,14 @@ const createCategory = async (category) => {
 
 const createPublisher = async (publisher) => {
   try {
-    const { publisher_name, publication_location } = publisher;
+    const { publisher_name, publisher_location } = publisher;
     console.log(
       "🚀 ~ file: queries.js:109 ~ createPublisher ~ publisher:",
       publisher
     );
     const result = await pool.query("CALL add_publisher($1, $2)", [
       publisher_name,
-      publication_location,
+      publisher_location,
     ]);
     return result;
   } catch (error) {
@@ -174,13 +174,13 @@ const updateCategory = async (categoryId, category) => {
   }
 };
 
-const updatePublisher = async (publisherId, publisher) => {
+const updatePublisher = async (publisher_id, publisher) => {
   try {
-    const { publisher_name, publication_location } = publisher;
+    const { publisher_name, publisher_location } = publisher;
     const result = await pool.query("CALL update_publisher($1, $2, $3)", [
-      publisherId,
+      publisher_id,
       publisher_name,
-      publication_location,
+      publisher_location,
     ]);
     return result.rows[0];
   } catch (error) {
@@ -306,13 +306,10 @@ const createBorrowedBook = async (borrowedBook) => {
   try {
     const { copy_id, user_id, borrow_date, returned_date, status } =
       borrowedBook;
-    const result = await pool.query("CALL add_borrowrecord($1, $2, $3, $4, $5)", [
-      copy_id,
-      user_id,
-      borrow_date,
-      returned_date,
-      status,
-    ]);
+    const result = await pool.query(
+      "CALL add_borrowrecord($1, $2, $3, $4, $5)",
+      [copy_id, user_id, borrow_date, returned_date, status]
+    );
     return result;
   } catch (error) {
     console.error("Error in creating the borrowed books:", error);
@@ -322,10 +319,11 @@ const createBorrowedBook = async (borrowedBook) => {
 
 const updateBorrowedBook = async (book_record_id, borrowedBook) => {
   try {
-    const {  copy_id, user_id, borrow_date, returned_date, status  } = borrowedBook;
+    const { copy_id, user_id, borrow_date, returned_date, status } =
+      borrowedBook;
     const result = await pool.query(
       "CALL update_borrowrecord($1, $2, $3, $4, $5, $6)",
-      [ book_record_id, copy_id, user_id, borrow_date, returned_date, status,]
+      [book_record_id, copy_id, user_id, borrow_date, returned_date, status]
     );
     return result.rows[0];
   } catch (error) {
@@ -334,9 +332,9 @@ const updateBorrowedBook = async (book_record_id, borrowedBook) => {
   }
 };
 
-const addCopy = async (book) => {
+const addCopy = async (copy) => {
   try {
-    const { book_id, status } = book;
+    const { book_id, status } = copy;
     const result = await pool.query("CALL add_copy($1, $2)", [book_id, status]);
     return result.rows[0];
   } catch (error) {
@@ -345,10 +343,9 @@ const addCopy = async (book) => {
   }
 };
 
-const updateCopy = async (book) => {
-  console.log("🚀 ~ file: queries.js:349 ~ updateCopy ~ book:", book)
+const updateCopy = async (copy_id, copy) => {
   try {
-    const { copy_id, book_id, status } = book;
+    const { book_id, status } = copy;
     const result = await pool.query("CALL update_copy($1, $2, $3)", [
       copy_id,
       book_id,

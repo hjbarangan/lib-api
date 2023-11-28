@@ -1,9 +1,7 @@
 ```
+TODO:
 
-store procedures - did not trigger a condition where if the ISBN exists it will raise an error
-
-add publishers - "null value in column \"publisher_location\" of relation \"publisher\" violates not-null constraint"
-
+Check triggers or raising of exception
 
 ```
 
@@ -21,8 +19,8 @@ add publishers - "null value in column \"publisher_location\" of relation \"publ
 		
 		
 [/] GET	/publishers	Fetch all publishers
-[] POST	/publishers	Add publisher
-[] PUT	/publishers/id	Edit publisher
+[/] POST	/publishers	Add publisher
+[/] PUT	/publishers/id	Edit publisher
 [/] DELETE	/publishers/id	Delete publisher
 		
 		
