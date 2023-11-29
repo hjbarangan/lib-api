@@ -247,7 +247,7 @@ const getUserById = async (userId) => {
 
 const createUser = async (user) => {
   try {
-    const { first_name, last_name, username, password, role } = user;
+    const { first_name, last_name, username, password, birthdate, role } = user;
 
     const checkUser = await pool.query(
       "SELECT * FROM user_account WHERE username = $1",
@@ -261,8 +261,8 @@ const createUser = async (user) => {
     await validateUser(user);
 
     const result = await pool.query(
-      "CALL add_useraccount($1, $2, $3, $4, $5)",
-      [first_name, last_name, username, password, role]
+      "CALL add_useraccount($1, $2, $3, $4, $5, $6)",
+      [first_name, last_name, username, password, birthdate, role]
     );
     return result;
   } catch (error) {
@@ -273,10 +273,10 @@ const createUser = async (user) => {
 
 const updateUser = async (user_id, user) => {
   try {
-    const { first_name, last_name, username, password, role } = user;
+    const { first_name, last_name, username, password, birthdate, role } = user;
     const result = await pool.query(
       "CALL update_useraccount($1, $2, $3, $4, $5, $6)",
-      [user_id, first_name, last_name, username, password, role]
+      [user_id, first_name, last_name, username, password, birthdate, role]
     );
     return result;
   } catch (error) {
@@ -300,6 +300,19 @@ const getAllBorrowedBooks = async () => {
     return result.rows;
   } catch (error) {
     console.error("Error in getAllBorrowedBooks:", error);
+    throw error;
+  }
+};
+
+const updateOverdueStatus = async (bookId) => {
+  try {
+    const result = await pool.query(
+      "UPDATE borrow_record SET status = 'Overdue' WHERE copy_id = $1",
+      [bookId]
+    );
+    return result.rows;
+  } catch (error) {
+    console.error("Error in updateOverdueStatus:", error);
     throw error;
   }
 };
@@ -433,4 +446,5 @@ module.exports = {
   updateCopy,
   deleteCopy,
   getAllBookCopies,
+  updateOverdueStatus
 };
