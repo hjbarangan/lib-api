@@ -247,7 +247,7 @@ const getUserById = async (userId) => {
 
 const createUser = async (user) => {
   try {
-    const { first_name, last_name, username, password, birthdate, role } = user;
+    const { first_name, last_name, username, password, role } = user;
 
     const checkUser = await pool.query(
       "SELECT * FROM user_account WHERE username = $1",
@@ -261,8 +261,8 @@ const createUser = async (user) => {
     await validateUser(user);
 
     const result = await pool.query(
-      "CALL add_useraccount($1, $2, $3, $4, $5, $6)",
-      [first_name, last_name, username, password, birthdate, role]
+      "CALL add_useraccount($1, $2, $3, $4, $5)",
+      [first_name, last_name, username, password, role]
     );
     return result;
   } catch (error) {
@@ -273,10 +273,10 @@ const createUser = async (user) => {
 
 const updateUser = async (user_id, user) => {
   try {
-    const { first_name, last_name, username, password, birthdate, role } = user;
+    const { first_name, last_name, username, password, role } = user;
     const result = await pool.query(
-      "CALL update_useraccount($1, $2, $3, $4, $5, $6)",
-      [user_id, first_name, last_name, username, password, birthdate, role]
+      "CALL update_useraccount($1, $2, $3, $4, $5)",
+      [user_id, first_name, last_name, username, password, role]
     );
     return result;
   } catch (error) {
@@ -378,6 +378,19 @@ const updateBorrowedBook = async (book_record_id, borrowedBook) => {
   }
 };
 
+const updateBorrowRecordStatus = async (status, book_record_id) => {
+  try {
+    const result = await pool.query(
+      "UPDATE borrow_record SET status = $1 WHERE borrow_record_id = $2 RETURNING *",
+      [status, book_record_id]
+    );
+    return result.rows[0];
+  } catch (error) {
+    console.error("Error in updateBorrowRecordStatus:", error);
+    throw error;
+  }
+};
+
 const addCopy = async (copy) => {
   try {
     const { book_id, status } = copy;
@@ -447,6 +460,7 @@ module.exports = {
   getAllBorrowedBooks,
   getUnreturnedBorrowedBooks,
   getBorrowedBookById,
+  updateBorrowRecordStatus,
   createBorrowedBook,
   updateBorrowedBook,
   addCopy,

@@ -24,7 +24,6 @@ router.get("/", async (req, res) => {
   router.post("/", async (req, res) => {
     try {
       const newPublisher = req.body;
-      console.log("🚀 ~ file: publisher.route.js:27 ~ router.post ~ newPublisher:", newPublisher)
       const publisher = await createPublisher(newPublisher);
       res.json(publisher);
     } catch (error) {

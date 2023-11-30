@@ -89,4 +89,14 @@ router.put("/:borrowedBookId", async (req, res) => {
   }
 });
 
+router.put("/change-status/:borrowedBookId", async (req, res) => {
+  try {
+    const { borrowedBookId } = req.params;
+    const borrowedBook = await updateBorrowedBook(req.body, borrowedBookId);
+    res.json(borrowedBook);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
+
 module.exports = router;
