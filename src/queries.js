@@ -342,11 +342,11 @@ const getBorrowedBookById = async (borrowedBookId) => {
 
 const createBorrowedBook = async (borrowedBook) => {
   try {
-    const { copy_id, user_id, borrow_date, returned_date, status } =
+    const { copy_id, user_id, borrow_date, return_by, returned_date, status } =
       borrowedBook;
     const result = await pool.query(
-      "CALL add_borrowrecord($1, $2, $3, $4, $5)",
-      [copy_id, user_id, borrow_date, returned_date, status]
+      "CALL add_borrowrecord($1, $2, $3, $4, $5, $6)",
+      [copy_id, user_id, borrow_date, return_by, returned_date, status]
     );
     return result;
   } catch (error) {
@@ -357,11 +357,19 @@ const createBorrowedBook = async (borrowedBook) => {
 
 const updateBorrowedBook = async (book_record_id, borrowedBook) => {
   try {
-    const { copy_id, user_id, borrow_date, returned_date, status } =
+    const { copy_id, user_id, borrow_date, return_by, returned_date, status } =
       borrowedBook;
     const result = await pool.query(
-      "CALL update_borrowrecord($1, $2, $3, $4, $5, $6)",
-      [book_record_id, copy_id, user_id, borrow_date, returned_date, status]
+      "CALL update_borrowrecord($1, $2, $3, $4, $5, $6, $7)",
+      [
+        book_record_id,
+        copy_id,
+        user_id,
+        borrow_date,
+        return_by,
+        returned_date,
+        status,
+      ]
     );
     return result.rows[0];
   } catch (error) {
@@ -446,5 +454,5 @@ module.exports = {
   updateCopy,
   deleteCopy,
   getAllBookCopies,
-  updateOverdueStatus
+  updateOverdueStatus,
 };
