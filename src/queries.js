@@ -391,10 +391,9 @@ const addCopy = async (copy) => {
 
 const updateCopy = async (copy_id, copy) => {
   try {
-    const { book_id, status } = copy;
-    const result = await pool.query("CALL update_copy($1, $2, $3)", [
+    const { status } = copy;
+    const result = await pool.query("CALL update_copy($1, $2)", [
       copy_id,
-      book_id,
       status,
     ]);
     return result;
