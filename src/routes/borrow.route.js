@@ -17,12 +17,11 @@ const checkAndUpdateOverdueStatus = async () => {
     const currentDate = new Date();
 
     for (const book of borrowedBooks) {
-      const dueDate = new Date(book.borrowed_date);
-
-      dueDate.setDate(dueDate.getDate() + 7);
+      const dueDate = new Date(book.return_by);
 
       if (currentDate > dueDate && book.returned_date === null) {
         await updateOverdueStatus(book.copy_id);
+        console.log("List of Overdue Records:", book);
       }
     }
   } catch (error) {
@@ -41,15 +40,6 @@ router.get("/", async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 });
-
-// router.get("/", async (req, res) => {
-//   try {
-//     const borrowedBooks = await getAllBorrowedBooks();
-//     res.json(borrowedBooks);
-//   } catch (error) {
-//     res.status(400).json({ error: error.message });
-//   }
-// });
 
 router.get("/unreturned", async (req, res) => {
   try {
