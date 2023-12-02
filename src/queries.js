@@ -275,7 +275,7 @@ const updateUser = async (user_id, user) => {
   try {
     const { first_name, last_name, username, password, role } = user;
     const result = await pool.query(
-      "CALL update_useraccount($1, $2, $3, $4, $5)",
+      "CALL update_useraccount($1, $2, $3, $4, $5, $6)",
       [user_id, first_name, last_name, username, password, role]
     );
     return result;
