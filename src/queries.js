@@ -342,11 +342,11 @@ const getBorrowedBookById = async (borrowedBookId) => {
 
 const createBorrowedBook = async (borrowedBook) => {
   try {
-    const { copy_id, user_id, borrow_date, return_by, returned_date, status } =
+    const { copy_id, user_id, borrowed_date, return_by } =
       borrowedBook;
     const result = await pool.query(
-      "CALL add_borrowrecord($1, $2, $3, $4, $5, $6)",
-      [copy_id, user_id, borrow_date, return_by, returned_date, 'Active']
+      "CALL add_borrowrecord($1, $2, $3, $4, $5)",
+      [copy_id, user_id, borrowed_date, return_by, 'Active']
     );
     return result;
   } catch (error) {
