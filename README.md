@@ -3,6 +3,10 @@ TODO:
 
 [/] Update the status of borrowed books to "Overdue" after 7 days
 [/] Add birthdate in user
+[] Copy should be active once book is returned
+[] Fix Condition in Overdue
+[/] Auth
+
 ```
 
 ```

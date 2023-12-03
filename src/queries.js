@@ -342,11 +342,10 @@ const getBorrowedBookById = async (borrowedBookId) => {
 
 const createBorrowedBook = async (borrowedBook) => {
   try {
-    const { copy_id, user_id, borrowed_date, return_by } =
-      borrowedBook;
+    const { copy_id, user_id, borrowed_date, return_by } = borrowedBook;
     const result = await pool.query(
       "CALL add_borrowrecord($1, $2, $3, $4, $5)",
-      [copy_id, user_id, borrowed_date, return_by, 'Active']
+      [copy_id, user_id, borrowed_date, return_by, "Active"]
     );
     return result;
   } catch (error) {
@@ -357,8 +356,14 @@ const createBorrowedBook = async (borrowedBook) => {
 
 const updateBorrowedBook = async (book_record_id, borrowedBook) => {
   try {
-    const { copy_id, user_id, borrowed_date, return_by, returned_date, status } =
-      borrowedBook;
+    const {
+      copy_id,
+      user_id,
+      borrowed_date,
+      return_by,
+      returned_date,
+      status,
+    } = borrowedBook;
     const result = await pool.query(
       "CALL update_borrowrecord($1, $2, $3, $4, $5, $6, $7)",
       [
@@ -436,6 +441,19 @@ const getAllBookCopies = async () => {
   }
 };
 
+const checkUser = async (username) => {
+  try {
+    const result = await pool.query(
+      "SELECT * FROM user_account WHERE username = $1",
+      [username]
+    );
+    return result.rows[0];
+  } catch (error) {
+    console.error("Error in checkUser", error);
+    throw error;
+  }
+};
+
 module.exports = {
   getAllBooks,
   getBookById,
@@ -468,4 +486,5 @@ module.exports = {
   deleteCopy,
   getAllBookCopies,
   updateOverdueStatus,
+  checkUser,
 };
