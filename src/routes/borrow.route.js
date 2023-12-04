@@ -8,6 +8,7 @@ const {
   createBorrowedBook,
   updateBorrowedBook,
   updateOverdueStatus,
+  deleteBorrowedBook
 } = require("../queries");
 
 const checkAndUpdateOverdueStatus = async () => {
@@ -83,6 +84,16 @@ router.put("/change-status/:borrowedBookId", async (req, res) => {
   try {
     const { borrowedBookId } = req.params;
     const borrowedBook = await updateBorrowedBook(req.body, borrowedBookId);
+    res.json(borrowedBook);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
+
+router.delete("/:borrowedBookId", async (req, res) => {
+  try {
+    const { borrowedBookId } = req.params;
+    const borrowedBook = await deleteBorrowedBook(borrowedBookId);
     res.json(borrowedBook);
   } catch (error) {
     res.status(400).json({ error: error.message });

@@ -383,6 +383,18 @@ const updateBorrowedBook = async (book_record_id, borrowedBook) => {
   }
 };
 
+const deleteBorrowedBook = async (borrowedBookId) => {
+  try {
+    const result = await pool.query("CALL delete_borrowrecord($1)", [
+      borrowedBookId,
+    ]);
+    return result.rows[0];
+  } catch (error) {
+    console.error("Error in deleteBorrowedBook:", error);
+    throw error;
+  }
+};
+
 const updateBorrowRecordStatus = async (status, book_record_id) => {
   try {
     const result = await pool.query(
@@ -481,6 +493,7 @@ module.exports = {
   updateBorrowRecordStatus,
   createBorrowedBook,
   updateBorrowedBook,
+  deleteBorrowedBook,
   addCopy,
   updateCopy,
   deleteCopy,
