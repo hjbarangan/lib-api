@@ -358,20 +358,15 @@ const updateBorrowedBook = async (book_record_id, borrowedBook) => {
   try {
     const {
       copy_id,
-      user_id,
-      borrowed_date,
-      return_by,
       returned_date,
       status,
     } = borrowedBook;
+    console.log("🚀 ~ file: queries.js:367 ~ updateBorrowedBook ~ borrowedBook:", borrowedBook);
     const result = await pool.query(
-      "CALL update_borrowrecord($1, $2, $3, $4, $5, $6, $7)",
+      "CALL update_borrowrecord($1, $2, $3, $4)",
       [
         book_record_id,
         copy_id,
-        user_id,
-        borrowed_date,
-        return_by,
         returned_date,
         status,
       ]
