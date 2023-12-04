@@ -12,7 +12,7 @@ const authRoutes = require("./auth.route");
 const authMiddleware = require("../middleware/auth.middleware");
 
 // router.use("/books", authMiddleware, booksRoutes);
-router.use("/books", authMiddleware, booksRoutes);
+router.use("/books", booksRoutes);
 router.use("/categories", categoriesRoutes);
 router.use("/publishers", publishersRoutes);
 router.use("/users", usersRoutes);
