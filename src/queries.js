@@ -368,7 +368,7 @@ const updateBorrowedBook = async (book_record_id, borrowedBook) => {
         book_record_id,
         copy_id,
         returned_date,
-        status,
+        'Inactive',
       ]
     );
     return result.rows[0];
