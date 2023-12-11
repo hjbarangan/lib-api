@@ -17,7 +17,7 @@ router.post("/", async (req, res) => {
     const validPassword = checkPassword(password, userExist.password);
 
     if (!validPassword) {
-      return res.status(401).json({ message: "Password is incorrect" });
+      return res.status(401).json({ message: "Incorrect credentials" });
     }
 
     const token = jwtGenerator(userExist.user_id);
