@@ -9,15 +9,15 @@ const borrowRoutes = require("./borrow.route");
 const copyRoutes = require("./copy.route");
 const authRoutes = require("./auth.route");
 
-const authMiddleware = require("../middleware/auth.middleware");
+// const authMiddleware = require("../middleware/auth.middleware");
 
 // router.use("/books", authMiddleware, booksRoutes);
-router.use("/books", authMiddleware, booksRoutes);
-router.use("/categories",  authMiddleware, categoriesRoutes);
-router.use("/publishers",  authMiddleware, publishersRoutes);
-router.use("/users",  authMiddleware, usersRoutes);
-router.use("/borrow-records",  authMiddleware, borrowRoutes);
-router.use("/copies", authMiddleware, copyRoutes);
+router.use("/books", booksRoutes);
+router.use("/categories", categoriesRoutes);
+router.use("/publishers", publishersRoutes);
+router.use("/users", usersRoutes);
+router.use("/borrow-records", borrowRoutes);
+router.use("/copies", copyRoutes);
 router.use("/login", authRoutes);
 
 module.exports = router;
